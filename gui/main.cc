@@ -8,6 +8,8 @@
 #include "command.h"
 #include <cctype>
 #include <algorithm>
+#include <unistd.h>
+
 using namespace std;
 
 
@@ -104,7 +106,48 @@ for(int i =0; i <lines.size();i++){
 return end;
 }
 
+
+void create(){
+
+//execl("./b.out", "/.", (char *)NULL);
+// execl("./", "ls", (char *)NULL);
+system("ls");
+
+}
+
+std::string exec(const char* cmd) {
+    char buffer[128];
+    string comstr = string(cmd) + " 2>&1";
+    std::string result = "";
+    FILE* pipe = popen(comstr.c_str(), "r");
+// FILE* pipe = popen(cmd, "r");
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    try {
+        while (fgets(buffer, sizeof buffer, pipe) != NULL) {
+            result += buffer;
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+    return result;
+}
+
+
+
+
 int main(){
+//	create();
+//
+//string str = exec("ls");
+//	cout<< exec("ls");
+//str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
+//cout<<str<<endl;
+
+//cout<<str<<endl;	
+//cin.get();
+
  vector<command> commands;
  vector<string> outputhis;
  vector<string> inputhis;
@@ -218,8 +261,18 @@ while (running){
 			
 			 echochar(' ');
 		 }
-		// inputhis.push_back(temps);
-		lines.push_back(temps);	
+		// inputhis.push_back(temps); 
+	  	
+		string str = exec(temps.c_str());
+		if(str.length()==0){}
+		for(int i =0 ; i < str.length(); i++){
+
+			if(str[i]== '\n'){
+			str[i]=' ';
+			}
+		}
+		
+		lines.push_back(str);	
 		outputpos= printoutput(outputpos ,linemark,lines,outputhis,h,w);
 		lines.resize(0);
 		inputcommand.resize(0);
@@ -278,6 +331,8 @@ refresh();
 
 
 //getch();
- endwin();// ends curses mode and 
+ endwin();// ends curses mode and
+//cout<< exec("ls")<<endl;
+//cin.get();
  return 0;
  }
