@@ -1,1 +1,9 @@
-this is the folder for the gui
+# cinGUI
+Authors: Scott Crawford, Chandler Graves, & Austin Nutter
+
+This program is cinGUI, an application designed to act as a mixture between a terminal and GUI by utilizing the curses library. The goal behind its development was to provide a tool for network administrators and programmers who may be restricted to only terminal use (whether due to SSH'ing into Linux machines or running in a command line only OS) to have a way to graphically represent data. The program can act almost exactly like a regular terminal could with additional features such as being able to make custom commands and functions for quick and easy access to repeatable tasks. 
+
+In order to add a custom command, one must first write and compile a program in C++ in order to obtain an executable file. After obtaining the executable, simply place it in the same directory as cinGUI and follow the menus to add a command. cinGUI will then have an easy shortcut to run the program by simply selecting the new custom command and it will print any outputs on the output section on the right half of the terminal. The custom commands can also be set up to perform multiple terminal commands at once as well. 
+
+This project was a major learning experience for everyone on the team. At the time of creating the program, Chandler was only 5 weeks into an Intro to C++ class, so he experimented with reading data in from files, vectors, and cementing his mastery with arrays. He made the first sample file to test cinGUI and to demo, but due to problems with piping information, none of the original sample programs were capable of running. Austin was in charge of figuring out how to make a C++ program start and run a separate, different program. With this, he ended up learning about parallel computing and race conditions which he wouldn't get to in his classes until a year after by the time of writing the program. Scott was in charge of getting the GUI elements of the program to function and setting up the piping network. In the process, he learned how to implement the curses library, set up pipeline networks, and forking files. 
+
