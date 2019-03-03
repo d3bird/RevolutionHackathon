@@ -57,6 +57,7 @@ for (int i=0;i<ymax && i<coms.size();i++){
   printw(str.c_str()); 
 
 }
+move(2,0);
 return 2;// returns the input
 }
 
@@ -473,7 +474,7 @@ while (running){
 				break;
 			}
 		}
-		
+	refresh();	
 
 		 }else{//run the menu command
 			if(menupos ==0){// creating a custom function
@@ -488,6 +489,7 @@ while (running){
 				printw("welcome to create you own function");
 				move(1,linemark/2);
 				printw("please input the name");
+				
 				while(true){
 				ch = getch();
 				if(ch ==10 && inputcommand.size()>0){
@@ -496,13 +498,29 @@ while (running){
 						move(termpoint, a);
 						echochar(' ');
 					 }
+					refresh();
 					break;
-				}else{	
+				}else
+				
+				if(ch == KEY_BACKSPACE  &&!inputcommand.empty()){
+				 inputcommand.pop_back();
+				 compos--;
+				 move(termpoint,compos);
+		 		temps = " ";
+				 echochar(' ');
+		// compos--;
+				 refresh();
+				 }else		
+				
+				{	
+					if(ch != KEY_UP && ch != KEY_DOWN && ch!= KEY_RIGHT && ch !=KEY_LEFT){
 					tempc = ch;
 					move(termpoint,compos);
 					compos++;
 					echochar(tempc);	
 					inputcommand.push_back(tempc);	
+					refresh();
+					}
 				}
 				}
 				command newc(temps);
@@ -523,6 +541,7 @@ while (running){
 				printw("4. save and exit");
 				move(9,0);
 				printw("5. exit without saving");
+				move(pos,0);
 				bool creating = true;
 				while(creating){
 					ch = getch();
@@ -549,11 +568,6 @@ while (running){
 								creating = false;
 								newc.setcomands(comint);
 								newc.setpars(comstring );
-
-
-
-
-
 								commands.push_back(newc);
 								break;
 							case 9://exit without saving
@@ -576,7 +590,7 @@ while (running){
 
 
 				}
-					
+				refresh();	
 				
 
 				for(int y=0; y<comhpos;y++){//flush out the function creator
@@ -585,11 +599,12 @@ while (running){
 						echochar(' ');
 					}
 				}
+				refresh();
 			createInputside(linemark, h,  commands);
 			}else{// run the custom function
-				lines.push_back("start of running command");
+				//lines.push_back("start of running command");
 			lines =	runcommand(commands[menupos]);
-			lines.push_back("end of running command");
+			//lines.push_back("end of running command");
 			outputpos= printoutput(outputpos ,linemark,lines,outputhis,h,w);					
 			}
 
@@ -603,6 +618,7 @@ while (running){
 		 temps = " ";
 		 echochar(' ');
 		// compos--;
+		 refresh();
 		 }
 		 break;
 
