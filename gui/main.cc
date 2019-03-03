@@ -6,6 +6,8 @@
 #include <vector>
 #include <cstring>
 #include "command.h"
+#include <cctype>
+#include <algorithm>
 using namespace std;
 
 
@@ -54,7 +56,7 @@ return 2;// returns the input
 }
 
 int printoutput(int start,int linemerge, vector<string> &lines){
-int end = start+1;
+int end = start;
 
 for(int i =0; i <lines.size();i++){
 	move(end,linemerge+1);
@@ -154,15 +156,36 @@ while (running){
 		}
 		 break;
 	 case KEY_RIGHT:
- 		
+		 if(compos<inputcommand.size()){
+			 compos++;
+			 move(termpoint,compos);
+			} 		
 		 break;
 	 case KEY_LEFT:
-		
+	  	if(compos >0){
+			compos--;
+			 move(termpoint,compos);
+		}
 		 break;
-	 case KEY_ENTER:
+	 case 10:// if the enter key is pressed
 	//	string str(inputcommand.begin(),inputcommand.end());
-	//	lines.push_back(str);
-	//	outputpos= printoutput(outputpos ,linemark,lines);
+	//	printw("enter was clicked");
+		 temps ="";
+		 if(!inputcommand.empty()){
+		 move(termpoint,compos);
+		 for(int a = 0 ; a < inputcommand.size();a++){
+			temps.push_back(inputcommand[a]);
+			move(termpoint, a);
+			
+			 echochar(' ');
+		 }
+		 
+		lines.push_back(temps);	 
+		outputpos= printoutput(outputpos ,linemark,lines);
+		lines.resize(0);
+		inputcommand.resize(0);
+		compos =0;
+		 }
 		 break;
 	 case KEY_BACKSPACE:
 		 if(!inputcommand.empty()){
