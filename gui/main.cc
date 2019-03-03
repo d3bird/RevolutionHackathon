@@ -24,8 +24,8 @@ void setstring(std::string i){com =i;}
 vector<int> getcommands(){return comman;}
 vector<string> getparms(){return par;}
 
-void setcomands(vector<int> &i){comman =i;}
-void setpars(vector<string> &i){par =i;}
+void setcomands(vector<int> i){comman =i;}
+void setpars(vector<string> i){par =i;}
 
 private:
 vector<int> comman;
@@ -101,6 +101,7 @@ int temp;
 		}
 		move(y,linemerge+1);
 		printw(his[y-1].c_str());
+		refresh();
 	}
 //	for(int y =1; y<ymax;y++){// recreating the output
 		
@@ -113,6 +114,7 @@ for(int i =0; i <lines.size();i++){
 	if(end<xmax){
 	move(end,linemerge+1);
         printw(lines[i].c_str());
+	refresh();
 	end++;
 	his.push_back(lines[i]);
 	}else{
@@ -133,8 +135,8 @@ std::string exec(const char* cmd) {
     char buffer[128];
     string comstr = string(cmd) + " 2>&1";
     std::string result = "";
-    FILE* pipe = popen(comstr.c_str(), "r");
-// FILE* pipe = popen(cmd, "r");
+   // FILE* pipe = popen(comstr.c_str(), "r");
+ FILE* pipe = popen(cmd, "r");
     if (!pipe) throw std::runtime_error("popen() failed!");
     try {
         while (fgets(buffer, sizeof buffer, pipe) != NULL) {
@@ -167,6 +169,7 @@ int ch;
 								printw("3. cyan");
 								int cpos2 =11;
 								move(11,0);
+								refresh();
 								while(colrun){
 									ch = getch();
 									switch(ch){
@@ -202,11 +205,13 @@ int ch;
 											colrun = false;
 											break;
 										}
+									refresh();
 								}
 								for(int y =10;y<14;y++){
 									for(int x =0; x<linemark;x++){
 										move(y,x);
 										echochar(' ');
+										refresh();
 									}
 								}
 
@@ -219,6 +224,7 @@ void getconsole(vector<int> &comint, vector<string> &comstring,int linemark, vec
 	string temps;
 	char tempc;
 	int ch;
+	int x =0;
 		bool conin = true;
 								move(10,0);
 								printw("input console command with parameters");
@@ -232,11 +238,25 @@ void getconsole(vector<int> &comint, vector<string> &comstring,int linemark, vec
 										temps.push_back(inputcommand[a]);
 										move(termpoint, a);
 										echochar(' ');
+										refresh();
 									 }
 									conin = false;
+
+								}else if( ch== KEY_BACKSPACE){
+									 if(!inputcommand.empty()){
+									 inputcommand.pop_back();
+									 x--;
+									 move(termpoint,x);
+									// temps = " ";
+									 echochar(' ');
+									 refresh();
+									 }
 								}else{	
 									tempc = ch;	
-								inputcommand.push_back(tempc);	
+								inputcommand.push_back(tempc);
+								move(termpoint,x);
+								echochar(ch);
+								x++;	
 								}
 								}
 								inputcommand.resize(0);
@@ -246,6 +266,7 @@ void getconsole(vector<int> &comint, vector<string> &comstring,int linemark, vec
 									for(int x=0; x< linemark;x++){
 										move(y,x);
 										echochar(' ');
+										refresh();
 									}
 								}
 
@@ -254,7 +275,65 @@ void getconsole(vector<int> &comint, vector<string> &comstring,int linemark, vec
 }
 
 
+vector<string> runcommand(command run){
+	string name = run.getstring();
+	vector<int> com = run.getcommands();
+	vector<string> parms= run.getparms();
+	vector<string> lines;
+	//lines.push_back("parms size =");
+	//string tempis = to_string( parms.size());
+	//lines.push_back(tempis);
+	//tempis = to_string(com.size());
+	//lines.push_back(tempis);
+	bool cred = false;
+	bool cgreed = false;
+	bool ccyan = false;
+	for(int i =0; i <com.size();i++){
+		if(com[i]==1){
+			//console
+				string str = exec(parms[i].c_str());
+				string tempss ="";
+				for(int i =0 ; i < str.length(); i++){
+					if(str[i]== '\n'){
+					lines.push_back(tempss);
+					tempss="";
+					}else{
+					tempss.push_back(str[i]);
+					}
+				}
+				lines.push_back(tempss);
+				if(cred||cgreed||ccyan){
+				lines.push_back(":cend:");
+				cred = false;
+				cgreed = false;
+				ccyan = false;
+				}
+		}else if(com[i]==2){//change color
+				if(std::stoi( parms[i])==1){
+						cred = true;
+						lines.push_back(":red:");
+				}else if(std::stoi( parms[i])==2){
+ 
+						
+						lines.push_back(":green:");
+						cgreed =true;
+				}else{
+						
+						lines.push_back(":cycan:");
+						ccyan = true;
+				}
+		}else{
 
+			if(cred||cgreed||ccyan){
+				lines.push_back(":cend:");
+				cred = false;
+				cgreed = false;
+				ccyan = false;
+			}
+ 		}
+	}
+	return lines;
+}
 
 int main(){
 
@@ -265,6 +344,7 @@ int main(){
  commands.push_back(temp);
  
  initscr();
+ start_color();
  clear;
  noecho();
  cbreak();
@@ -319,6 +399,8 @@ while (running){
 			menupos--;
 			move(yc,xc);
 		}
+
+
 
 		break;
 	 case KEY_DOWN:
@@ -416,7 +498,10 @@ while (running){
 					 }
 					break;
 				}else{	
-					tempc = ch;	
+					tempc = ch;
+					move(termpoint,compos);
+					compos++;
+					echochar(tempc);	
 					inputcommand.push_back(tempc);	
 				}
 				}
@@ -462,6 +547,13 @@ while (running){
 						switch(pos){
 							case 8:// save and exit
 								creating = false;
+								newc.setcomands(comint);
+								newc.setpars(comstring );
+
+
+
+
+
 								commands.push_back(newc);
 								break;
 							case 9://exit without saving
@@ -472,6 +564,8 @@ while (running){
 								break;						
 							case 7: //compar data
 								break;
+
+
 							case 6://change the color
 								getcolor( comint,  comstring, linemark);	
 								break;
@@ -480,11 +574,9 @@ while (running){
 
 					}
 
+
 				}
-				
-
-
-				
+					
 				
 
 				for(int y=0; y<comhpos;y++){//flush out the function creator
@@ -495,8 +587,10 @@ while (running){
 				}
 			createInputside(linemark, h,  commands);
 			}else{// run the custom function
-
-
+				lines.push_back("start of running command");
+			lines =	runcommand(commands[menupos]);
+			lines.push_back("end of running command");
+			outputpos= printoutput(outputpos ,linemark,lines,outputhis,h,w);					
 			}
 
 		 }
