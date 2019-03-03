@@ -43,12 +43,14 @@ std::string com;
 
 
 int createInputside(int xmax, int ymax, vector<command> &coms){
+move(0,0);
+ printw("custom command list:");
  string str= "asd";
  char* temp2;
 
 for (int i=0;i<ymax && i<coms.size();i++){
  move(i+2,0);
- cout<<i<<endl;
+ //cout<<i<<endl;
  str = coms[i].getstring();
   temp2 = new char[str.size()];
   std::strncpy(temp2, str.c_str(), str.size());
@@ -128,19 +130,115 @@ std::string exec(const char* cmd) {
     return result;
 }
 
+void drawcomands(){
+move(0,0);
+ printw("custom command list:");
+
+}
+
+void getcolor(vector<int> &comint, vector<string> &comstring,int linemark){
+int ch;
+	bool colrun = true;
+								move(10,0);
+								printw("pick a color");
+								move(11,0);
+								printw("1. red");
+								move(12,0);
+								printw("2. green");
+								move(13,0);
+								printw("3. cyan");
+								int cpos2 =11;
+								move(11,0);
+								while(colrun){
+									ch = getch();
+									switch(ch){
+										case KEY_UP:
+											if(cpos2==11){
+											cpos2 = 13;
+											}else{
+											cpos2--;
+											}	
+											move(cpos2,0);	
+											break;
+											case KEY_DOWN:
+											if (cpos2 ==13){
+											cpos2 = 11;
+											}else{
+											cpos2++;
+											}
+											move(cpos2,0);
+											break;
+											case 10:
+											comint.push_back(2);
+											switch(cpos2){
+												case 10:
+													comstring.push_back("r");
+													break;
+												case 11:
+													comstring.push_back("g");
+													break;
+												case 12:
+													comstring.push_back("c");
+													break;
+											}
+											colrun = false;
+											break;
+										}
+								}
+								for(int y =10;y<14;y++){
+									for(int x =0; x<linemark;x++){
+										move(y,x);
+										echochar(' ');
+									}
+								}
+
+}
+
+
+
+
+void getconsole(vector<int> &comint, vector<string> &comstring,int linemark, vector<char> &inputcommand,int termpoint){
+	string temps;
+	char tempc;
+	int ch;
+		bool conin = true;
+								move(10,0);
+								printw("input console command with parameters");
+								move(11,0);
+								printw("click enter when finished");
+								inputcommand.resize(0);
+								while(conin){
+									ch = getch();
+								if(ch ==10 && inputcommand.size()>0){
+									for(int a = 0 ; a < inputcommand.size();a++){
+										temps.push_back(inputcommand[a]);
+										move(termpoint, a);
+										echochar(' ');
+									 }
+									conin = false;
+								}else{	
+									tempc = ch;	
+								inputcommand.push_back(tempc);	
+								}
+								}
+								inputcommand.resize(0);
+								comint.push_back(1);
+								comstring.push_back(temps);
+								for(int y=10; y<13;y++){
+									for(int x=0; x< linemark;x++){
+										move(y,x);
+										echochar(' ');
+									}
+								}
+
+
+
+}
+
 
 
 
 int main(){
-//	create();
-//
-//string str = exec("ls");
-//	cout<< exec("ls");
-//str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
-//cout<<str<<endl;
-
-//cout<<str<<endl;	
-//cin.get();
 
  vector<command> commands;
  vector<string> outputhis;
@@ -156,9 +254,8 @@ int main(){
  int h, w;
  getmaxyx(stdscr, h, w);
  int linemark = w/2;
- move(0,0);
-//attron(A_BOLD);
- printw("custom command list:");
+ //move(0,0);
+ //printw("custom command list:");
  move(0,linemark+1);
  printw("output");
  for(int i =0 ;i< h;i++){
@@ -262,8 +359,9 @@ while (running){
 		int index = inputhis.size()-1;
 		for(int i = termpoint-2;i>comhpos-1;i--){
 			for(int x =0; x<linemark;x++){
-				move(i,x);	
-				echochar(' ');
+				move(i,x);
+				
+				 echochar(' ');
 			}
 			move(i,0);
 			printw(inputhis[index].c_str());
@@ -275,7 +373,110 @@ while (running){
 		
 
 		 }else{//run the menu command
-			
+			if(menupos ==0){// creating a custom function
+				inputcommand.resize(0);
+				for(int y =0; y<h/2;y++){
+					for(int x =0;x<linemark;x++){
+						move(y,x);
+						echochar(' ');
+					}
+				}
+				move(0,linemark/2);
+				printw("welcome to create you own function");
+				move(1,linemark/2);
+				printw("please input the name");
+				while(true){
+				ch = getch();
+				if(ch ==10 && inputcommand.size()>0){
+					for(int a = 0 ; a < inputcommand.size();a++){
+						temps.push_back(inputcommand[a]);
+						move(termpoint, a);
+						echochar(' ');
+					 }
+					break;
+				}else{	
+					tempc = ch;	
+					inputcommand.push_back(tempc);	
+				}
+				}
+				command newc(temps);
+				vector<int> comint;
+				vector<string>comstring;
+				int pos =5;
+				move(3,0);
+				printw("nav the menu using the arrow keys and enter");
+				move(4,0);
+				printw("pick the commands in the order you want them to exicute");
+				move(5,0);
+				printw("1. add a console command");
+				move(6,0);
+				printw("2. change the color of the output");
+				move(7,0);
+				printw("3. compare data from two programs");
+				move(8,0);
+				printw("4. save and exit");
+				move(9,0);
+				printw("5. exit without saving");
+				bool creating = true;
+				while(creating){
+					ch = getch();
+					switch(ch){
+					case KEY_UP:
+						if(pos==5){
+						pos = 9;
+						}else{
+						pos--;
+						}
+						move(pos,0);	
+						break;
+					case KEY_DOWN:
+						if (pos ==9){
+						pos = 5;
+						}else{
+						pos++;
+						}
+						move(pos,0);
+						break;
+					case 10:
+						switch(pos){
+							case 8:// save and exit
+								creating = false;
+								commands.push_back(newc);
+								break;
+							case 9://exit without saving
+								creating = false;	
+								break;
+							case 5://add a consoleomand
+								getconsole(comint,comstring, linemark,inputcommand, termpoint);
+								break;						
+							case 7: //compar data
+								break;
+							case 6://change the color
+								getcolor( comint,  comstring, linemark);	
+								break;
+						}
+					break;	
+
+					}
+
+				}
+				
+
+
+				
+				
+
+				for(int y=0; y<comhpos;y++){//flush out the function creator
+					for(int x =0; x<linemark;x++){
+						move(y,x);
+						echochar(' ');
+					}
+				}
+			createInputside(linemark, h,  commands);
+			}else{// run the custom function
+
+
+			}
 
 		 }
 		 break;
@@ -292,8 +493,6 @@ while (running){
 
  default:
        tempc = ch;
-//temps = to_string(((char)ch));
-//temps = to_string(tempc);
 move(termpoint,compos);
 compos++;
 
