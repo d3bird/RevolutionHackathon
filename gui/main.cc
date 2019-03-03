@@ -5,39 +5,29 @@
 #include <stack>
 #include <vector>
 #include <cstring>
-#include "command.h"
+//#include "command.h"
 #include <cctype>
 #include <algorithm>
 #include <unistd.h>
+//#pragma once
 
 using namespace std;
 
+class command{
+public:
 
-void example(){
- bool running = true;
- int ch;
+command(std::string i){com =i;}
+command(){com ="";}
+std::string getstring(){return com;}
+void setstring(std::string i){com =i;}
+private:
 
-while(running){
-	ch = getch();
-	if(ch==KEY_EIC){
-		printw("F1 Key pressed");
-		running = false;
-	}else{	
-		printw("The pressed key is ");
-		attron(A_BOLD);
-		printw("%c", ch);
-		attroff(A_BOLD);
-printw("\n");
+std::string com;
 
-	}
-
- refresh();
-// getch();
-// endwin();
-}
+};
 
 
-}
+
 
 
 
@@ -264,7 +254,7 @@ while (running){
 		// inputhis.push_back(temps); 
 	  	
 		string str = exec(temps.c_str());
-		if(str.length()==0){}
+	//	if(str.length()==0){}
 		for(int i =0 ; i < str.length(); i++){
 
 			if(str[i]== '\n'){
