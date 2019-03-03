@@ -20,7 +20,7 @@ void display(const vector<consumer> &data);
 //Main
 int main()
 {
-  size_t size = 20;
+  size_t size = 10;
   int decision;
   vector<consumer> data;
   data.reserve(size);
@@ -49,6 +49,7 @@ int main()
 
 void load(vector<consumer> &data)
 {
+  data.clear();
   int x = 0;
   string filename;
   std::ifstream ins;
@@ -56,12 +57,17 @@ void load(vector<consumer> &data)
   cout << "Enter filename: ";
   cin >> filename;
   ins.open(filename.c_str());
+  if(ins.fail())
+  {
+    cout << "Something messed up. Send help.\n";
+    return;
+  }
   while(ins)
   {
     while(ins.peek() == '\r' || ins.peek() == '\n') ins.ignore();
     getline(ins, tmp.name);
     ins >> tmp.income;
-    data.at(x) = tmp;
+    data.push_back(tmp);
     x++;
   }
   ins.close();
@@ -69,7 +75,12 @@ void load(vector<consumer> &data)
 
 void display(const vector<consumer> &data)
 {
-  for(size_t i = 0; i < data.size(); i++)
+  if(data.size() == 0)
+  {
+    cout << "\nThe list is empty. Cannot display.\n";
+    return;
+  }
+  for(size_t i = 0; i < (data.size() - 1); i++)
   {
     cout << data[i].name << endl << data[i].income << endl;
   }
