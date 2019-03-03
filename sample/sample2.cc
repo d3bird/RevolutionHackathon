@@ -21,30 +21,15 @@ void display(const vector<consumer> &data);
 int main()
 {
   size_t size = 10;
-  int decision;
   vector<consumer> data;
   data.reserve(size);
-  while(true)
-  {
-    if(data.size() == 0)
-    {
-      cout << endl << "WARNING: EMPTY LIST. LOAD FROM FILE FIRST." << endl;
-    }
-    cout << endl << "1. Load data from a file." << endl;
-    cout << "2. Display loaded data." << endl;
-    cout << "3. Calculate average income." << endl;
-    cout << "4. Search for a consumer by name." << endl;
-    cout << "5. Display largest income." << endl;
-    cout << "6. Add a new consumer." << endl;
-    cout << "7. Remove a consumer." << endl;
-    cout << "8. Save changes." << endl;
-    cout << "9. Quit." << endl;
-    cout << endl << endl <<"Enter command: ";
-    cin >> decision;
-    if(decision == 1) load(data);
-    else if(decision == 2) display(data);
-    else if(decision == 9) return 0;
-  }
+  load(data);
+  cout << "Outputting data:" << endl;
+  display(data);
+  cout << endl;
+  load(data);
+  cout << "Outputting data:" << endl;
+  display(data);
 }
 
 void load(vector<consumer> &data)
