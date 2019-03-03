@@ -65,7 +65,25 @@ return 2;// returns the input
 
 int printoutput(int start,int linemerge, vector<string> &lines, vector<string> &his,int ymax, int xmax){
 int end = start;
-
+int maxsize = xmax -linemerge;
+vector<string> temp;
+string temps;
+string temps2;
+for(int i =0; i <lines.size();i++){
+	temps = lines[i];
+	if(temps.length()>=maxsize){
+	while(temps.length()>=maxsize){
+		temps2 = temps.substr(0,maxsize-1);
+		temps = temps.substr(maxsize-1);
+		lines.push_back(temps2);
+	}
+	lines.push_back(temps);	
+	
+	}else{
+		temp.push_back(lines[i]);
+	}
+}
+lines = temp;
 if(lines.size()+his.size()>ymax){
 int diff = lines.size()+his.size()-ymax;
 int temp;
@@ -342,14 +360,17 @@ while (running){
 	  	
 		string str = exec(temps.c_str());
 	//	if(str.length()==0){}
+		string tempss ="";
 		for(int i =0 ; i < str.length(); i++){
-
 			if(str[i]== '\n'){
-			str[i]=' ';
+				lines.push_back(tempss);
+				tempss="";
+			}else{
+			tempss.push_back(str[i]);
 			}
 		}
 		
-		lines.push_back(str);	
+	//	lines.push_back(str);	
 		outputpos= printoutput(outputpos ,linemark,lines,outputhis,h,w);
 		lines.resize(0);
 		inputcommand.resize(0);
