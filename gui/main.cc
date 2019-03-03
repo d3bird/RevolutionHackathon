@@ -20,11 +20,22 @@ command(std::string i){com =i;}
 command(){com ="";}
 std::string getstring(){return com;}
 void setstring(std::string i){com =i;}
+
+vector<int> getcommands(){return comman;}
+vector<string> getparms(){return par;}
+
+void setcomands(vector<int> &i){comman =i;}
+void setpars(vector<string> &i){par =i;}
+
 private:
+vector<int> comman;
+vector<string> par;
 
 std::string com;
 
 };
+
+
 
 
 
@@ -97,13 +108,6 @@ return end;
 }
 
 
-void create(){
-
-//execl("./b.out", "/.", (char *)NULL);
-// execl("./", "ls", (char *)NULL);
-system("ls");
-
-}
 
 std::string exec(const char* cmd) {
     char buffer[128];
@@ -143,20 +147,6 @@ int main(){
  vector<string> inputhis;
  command temp("create command");
  commands.push_back(temp);
- temp.setstring("command 2");
- commands.push_back(temp);
- temp.setstring("command 3");
- commands.push_back(temp);
- temp.setstring("command 4");
- commands.push_back(temp);
- temp.setstring("command 5");
- commands.push_back(temp);
- temp.setstring("command 6");
- commands.push_back(temp);
- temp.setstring("command 7");
- commands.push_back(temp);
- temp.setstring("command 8");
-commands.push_back(temp);
  
  initscr();
  clear;
