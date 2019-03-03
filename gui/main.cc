@@ -73,14 +73,14 @@ string temps2;
 for(int i =0; i <lines.size();i++){
 	temps = lines[i];
 	if(lines[i]==":red:"){
-			attron(COLOR_RED);
+	//		attron(COLOR_RED);
 	}else if(lines[i] ==":green:"){
 	//attron(COLOR_GREEN);
 	printw("\e[32m");
 	}else if(lines[i] ==":cyan:"){
-		attron(COLOR_CYAN);
+	//	attron(COLOR_CYAN);
 	}else if(":cend:"){
-		attron(COLOR_WHITE);
+	//	attron(COLOR_WHITE);
 	}
 
 	if(temps.length()>=maxsize){
@@ -144,10 +144,28 @@ return end;
 
 
 std::string exec(const char* cmd) {
-    char buffer[128];
+
+
+//if(cmd[0]=='.' &&cmd[1]=='.'){
+//string output ="";
+
+//pid_t pid=fork();
+   // if (pid==0) {
+//    static char *argv[]={"echo","Foo is my name.",NULL};
+  //      execv("/bin/echo",argv);
+//	exit(127);
+    // execl("./"+, "/.", (char *)NULL);
+
+  //  }
+
+
+
+
+//	}else{
+    char buffer[200];
     string comstr = string(cmd) + " 2>&1";
     std::string result = "";
-   // FILE* pipe = popen(comstr.c_str(), "r");
+  //  FILE* pipe = popen(comstr.c_str(), "r");
  FILE* pipe = popen(cmd, "r");
     if (!pipe) throw std::runtime_error("popen() failed!");
     try {
@@ -160,6 +178,10 @@ std::string exec(const char* cmd) {
     }
     pclose(pipe);
     return result;
+//
+///	}
+
+//return output;
 }
 
 void drawcomands(){
@@ -347,6 +369,9 @@ vector<string> runcommand(command run){
 	return lines;
 }
 
+
+
+
 int main(){
 
  vector<command> commands;
@@ -354,9 +379,11 @@ int main(){
  vector<string> inputhis;
  command temp("create command");
  commands.push_back(temp);
- 
+
  initscr();
- start_color();
+//cout<<"\e[37m"<<endl; 
+// start_color();
+// attron(COLOR_WHITE);
  clear;
  noecho();
  cbreak();
@@ -451,8 +478,38 @@ while (running){
 			 echochar(' ');
 		 }
 		// inputhis.push_back(temps); 
-	  	
-		string str = exec(temps.c_str());
+	  	if(temps=="clear"){
+			lines.resize(0);
+			outputhis.resize(0);
+			for(int y =0; y <h;y++){
+				for(int x =linemark+1;x<w;x++){
+					move(y,x);
+					echochar(' ');
+				}
+			}
+			refresh();
+		}else if(temps =="quit"){
+ 		endwin();
+		return 0;
+		}else if (temps =="redraw"){
+			createInputside(linemark, h,  commands);
+			
+				 for(int i =0 ;i< h;i++){//draw the line
+				move(i, linemark);
+				printw("|");
+				 }
+		
+			lines.resize(0);// redraw the output
+			outputhis.resize(0);
+			for(int y =0; y <h;y++){
+				for(int x =linemark+1;x<w;x++){
+					move(y,x);
+					echochar(' ');
+				}
+			}
+			refresh();
+			}else{
+			string str = exec(temps.c_str());
 	//	if(str.length()==0){}
 		string tempss ="";
 		for(int i =0 ; i < str.length(); i++){
@@ -462,6 +519,7 @@ while (running){
 			}else{
 			tempss.push_back(str[i]);
 			}
+		}
 		}
 		
 	//	lines.push_back(str);	
