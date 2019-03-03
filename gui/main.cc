@@ -72,6 +72,17 @@ string temps;
 string temps2;
 for(int i =0; i <lines.size();i++){
 	temps = lines[i];
+	if(lines[i]==":red:"){
+			attron(COLOR_RED);
+	}else if(lines[i] ==":green:"){
+	//attron(COLOR_GREEN);
+	printw("\e[32m");
+	}else if(lines[i] ==":cyan:"){
+		attron(COLOR_CYAN);
+	}else if(":cend:"){
+		attron(COLOR_WHITE);
+	}
+
 	if(temps.length()>=maxsize){
 	while(temps.length()>=maxsize){
 		temps2 = temps.substr(0,maxsize-1);
@@ -310,10 +321,10 @@ vector<string> runcommand(command run){
 				ccyan = false;
 				}
 		}else if(com[i]==2){//change color
-				if(std::stoi( parms[i])==1){
+				if( parms[i]=="r"){
 						cred = true;
 						lines.push_back(":red:");
-				}else if(std::stoi( parms[i])==2){
+				}else if( parms[i]=="g"){
  
 						
 						lines.push_back(":green:");
