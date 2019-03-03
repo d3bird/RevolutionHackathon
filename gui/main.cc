@@ -37,7 +37,7 @@ printw("\n");
 
 
 
-int createInputside(int xmax, int ymax, vector<command> coms){
+int createInputside(int xmax, int ymax, vector<command> &coms){
  string str= "asd";
  char* temp2;
 
@@ -51,6 +51,22 @@ for (int i=0;i<ymax && i<coms.size();i++){
 
 }
 return 2;// returns the input
+}
+
+int printoutput(int start,int linemerge, vector<string> &lines){
+int end = start+1;
+
+for(int i =0; i <lines.size();i++){
+	move(end,linemerge+1);
+//	if(lines[i].size()<(xmax-linemerge)){
+        printw(lines[i].c_str());
+//	}
+
+	end++;
+}
+
+
+return end;
 }
 
 int main(){
@@ -89,6 +105,12 @@ commands.push_back(temp);
 	move(i, linemark);
 	printw("|");
  }
+int termpoint =h-3;
+move(termpoint, 0);
+printw("termanal input");
+termpoint++;
+
+
 move(2,0);
 int endpos = createInputside(linemark, h,  commands);
 refresh();
@@ -99,7 +121,12 @@ int ch;
 int xc =0;
 int yc=2;
 int menupos =0;
-
+int outputpos =1;
+vector<char> inputcommand;
+vector<string> lines;
+int compos =0;
+char tempc;
+string temps;
 while (running){
  ch = getch();
  switch(ch){
@@ -127,15 +154,37 @@ while (running){
 		}
 		 break;
 	 case KEY_RIGHT:
-
+ 		
 		 break;
 	 case KEY_LEFT:
-
+		
+		 break;
+	 case KEY_ENTER:
+	//	string str(inputcommand.begin(),inputcommand.end());
+	//	lines.push_back(str);
+	//	outputpos= printoutput(outputpos ,linemark,lines);
+		 break;
+	 case KEY_BACKSPACE:
+		 if(!inputcommand.empty()){
+		 inputcommand.pop_back();
+		 compos--;
+		 move(termpoint,compos);
+		 temps = " ";
+		 echochar(' ');
+		// compos--;
+		 }
 		 break;
 
  default:
+       tempc = ch;
+//temps = to_string(((char)ch));
+//temps = to_string(tempc);
+move(termpoint,compos);
+compos++;
 
-	
+echochar(ch);
+move(yc,xc);//moving back to the menue
+inputcommand.push_back(tempc);
 
 	 break;
  }
