@@ -149,6 +149,7 @@ termpoint++;
 
 move(termpoint-7,0);
 int comh= termpoint -7;
+int comhpos = comh+1;
 printw("command history:");
 
 move(2,0);
@@ -217,14 +218,31 @@ while (running){
 			
 			 echochar(' ');
 		 }
+		// inputhis.push_back(temps);
 		lines.push_back(temps);	
 		outputpos= printoutput(outputpos ,linemark,lines,outputhis,h,w);
 		lines.resize(0);
 		inputcommand.resize(0);
 		compos =0;
 		
-		 }else{//run the menu command
+		inputhis.push_back(temps);
+		int index = inputhis.size()-1;
+		for(int i = termpoint-2;i>comhpos-1;i--){
+			for(int x =0; x<linemark;x++){
+				move(i,x);	
+				echochar(' ');
+			}
+			move(i,0);
+			printw(inputhis[index].c_str());
+			index--;
+			if(index<0){
+				break;
+			}
+		}
+		
 
+		 }else{//run the menu command
+			
 
 		 }
 		 break;
