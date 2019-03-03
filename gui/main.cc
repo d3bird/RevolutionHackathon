@@ -13,6 +13,16 @@
 
 using namespace std;
 
+
+
+
+//     _  _(o)_(o)_  _
+//  ._\`:_ F S M _:' \_,
+//       / (`---'\ `-.
+//    ,-`  _)    (_, 
+
+
+
 class command{
 public:
 
@@ -36,6 +46,10 @@ std::string com;
 };
 
 
+//     _  _(o)_(o)_  _
+//  ._\`:_ F S M _:' \_,
+//       / (`---'\ `-.
+//    ,-`  _)    (_, 
 
 
 
@@ -62,6 +76,10 @@ return 2;// returns the input
 }
 
 
+//     _  _(o)_(o)_  _
+//  ._\`:_ F S M _:' \_,
+//       / (`---'\ `-.
+//    ,-`  _)    (_, 
 
 
 int printoutput(int start,int linemerge, vector<string> &lines, vector<string> &his,int ymax, int xmax){
@@ -99,6 +117,7 @@ lines = temp;
 if(lines.size()+his.size()>ymax){
 int diff = lines.size()+his.size()-ymax;
 int temp;
+	
 	for(int i =0; i < lines.size(); i++){//adding the new lines to the history
 		his.push_back(lines[i]);
 	}
@@ -141,6 +160,10 @@ for(int i =0; i <lines.size();i++){
 return end;
 }
 
+//     _  _(o)_(o)_  _
+//  ._\`:_ F S M _:' \_,
+//       / (`---'\ `-.
+//    ,-`  _)    (_, 
 
 
 std::string exec(const char* cmd) {
@@ -252,6 +275,10 @@ int ch;
 }
 
 
+//     _  _(o)_(o)_  _
+//  ._\`:_ F S M _:' \_,
+//       / (`---'\ `-.
+//    ,-`  _)    (_, 
 
 
 void getconsole(vector<int> &comint, vector<string> &comstring,int linemark, vector<char> &inputcommand,int termpoint){
@@ -369,6 +396,10 @@ vector<string> runcommand(command run){
 	return lines;
 }
 
+//     _  _(o)_(o)_  _
+//  ._\`:_ F S M _:' \_,
+//       / (`---'\ `-.
+//    ,-`  _)    (_, 
 
 
 
@@ -507,6 +538,7 @@ while (running){
 					echochar(' ');
 				}
 			}
+			
 			refresh();
 			}else{
 			string str = exec(temps.c_str());
