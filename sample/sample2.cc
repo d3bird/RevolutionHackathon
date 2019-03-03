@@ -28,18 +28,18 @@ int main()
   {
     if(data.size() == 0)
     {
-      cout << "\nWARNING: EMPTY LIST. LOAD FROM FILE FIRST.\n";
+      cout << endl << "WARNING: EMPTY LIST. LOAD FROM FILE FIRST." << endl;
     }
-    cout << "\n1. Load data from a file.\n";
-    cout << "2. Display loaded data.\n";
-    cout << "3. Calculate average income.\n";
-    cout << "4. Search for a consumer by name.\n";
-    cout << "5. Display largest income.\n";
-    cout << "6. Add a new consumer.\n";
-    cout << "7. Remove a consumer.\n";
-    cout << "8. Save changes.\n";
-    cout << "9. Quit.\n";
-    cout << "\n\nEnter command: ";
+    cout << endl << "1. Load data from a file." << endl;
+    cout << "2. Display loaded data." << endl;
+    cout << "3. Calculate average income." << endl;
+    cout << "4. Search for a consumer by name." << endl;
+    cout << "5. Display largest income." << endl;
+    cout << "6. Add a new consumer." << endl;
+    cout << "7. Remove a consumer." << endl;
+    cout << "8. Save changes." << endl;
+    cout << "9. Quit." << endl;
+    cout << endl << endl <<"Enter command: ";
     cin >> decision;
     if(decision == 1) load(data);
     else if(decision == 2) display(data);
@@ -59,7 +59,7 @@ void load(vector<consumer> &data)
   ins.open(filename.c_str());
   if(ins.fail())
   {
-    cout << "Something messed up. Send help.\n";
+    cout << "Something messed up. Send help." << endl;
     return;
   }
   while(ins)
@@ -77,7 +77,7 @@ void display(const vector<consumer> &data)
 {
   if(data.size() == 0)
   {
-    cout << "\nThe list is empty. Cannot display.\n";
+    cout << endl << "The list is empty. Cannot display." << endl;
     return;
   }
   for(size_t i = 0; i < (data.size() - 1); i++)
